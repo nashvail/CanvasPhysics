@@ -1,6 +1,6 @@
 let Vector = {
   // Create with polar coordinates
-  create(magnitude, direction) {
+  create(magnitude = 0, direction = 0) {
     return this.extend({
       magnitude: Math.abs(magnitude),
       direction
@@ -31,6 +31,16 @@ let Vector = {
     } else { // we'll handle that later
       return -1;
     }
+  },
+  setX(newX) {
+    let newV = Vector.cartCreate(newX, this.y);
+    this.setMagnitude(newV.magnitude);
+    this.setDirection(newV.direction);
+  },
+  setY(newY) {
+    let newV = Vector.cartCreate(this.x, newY);
+    this.setMagnitude(newV.magnitude);
+    this.setDirection(newV.direction);
   },
   setDirection(angle) {
     this.direction = angle;
@@ -92,7 +102,8 @@ let Vector = {
     return Vector.create(this.magnitude * Math.sin(this.direction), this.quadrant === 1 || this.quadrant === 2 ? Math.PI / 2 : -Math.PI / 2);
   },
   // Drawing the vector diagram
-  draw(context, sx = 0, sy = 0) {
+  draw(context, sx = 0, sy = 0, color = '#000') {
+    context.strokeStyle = color;
     context.beginPath();
     context.moveTo(sx, sy);
     context.lineTo(sx + this.x, sy + this.y);
@@ -104,11 +115,12 @@ let Vector = {
       context.rotate(this.direction);
       context.beginPath();
       context.moveTo(0, 0);
-      context.lineTo(-10, -10);
+      context.lineTo(-5, -5);
       context.moveTo(0, 0);
-      context.lineTo(-10, 10);
+      context.lineTo(-5, 5);
       context.stroke();
       context.restore();
     }
+    context.fillStyle = '#000';
   }
 };
